@@ -24,28 +24,29 @@ class PlaySoundsViewController: UIViewController {
         audioFile = AVAudioFile(forReading: receivedAudio.filePathUrl, error: nil)
         
         super.viewDidLoad()
-
+        
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     @IBAction func slowButtonDidPress(sender: UIButton) {
-        self.audioPlayer.stop()
-        self.audioEngine.reset()
-        self.audioPlayer.rate = 0.5
-        self.audioPlayer.currentTime = 0
-        self.audioPlayer.play()
+        playAudioWithVariableRate(0.5)
     }
-
+    
     @IBAction func fastButtonDidPress(sender: UIButton) {
-        self.audioPlayer.stop()
-        self.audioEngine.reset()
-        self.audioPlayer.rate = 1.5
-        self.audioPlayer.currentTime = 0
-        self.audioPlayer.play()
+        playAudioWithVariableRate(1.5)
+    }
+    
+    func playAudioWithVariableRate(rate: Float){
+        
+        resetAudioEngineAndPlayer()
+        
+        audioPlayer.currentTime = 0
+        audioPlayer.play()
+        audioPlayer.rate = rate
     }
     
     @IBAction func chipmunkButtonDidPress(sender: UIButton) {
@@ -58,9 +59,8 @@ class PlaySoundsViewController: UIViewController {
     
     
     func playAudioWithVariablePitch(pitch: Float){
-        audioPlayer.stop()
-        audioEngine.stop()
-        audioEngine.reset()
+        
+        resetAudioEngineAndPlayer()
         
         var audioPlayerNode = AVAudioPlayerNode()
         audioEngine.attachNode(audioPlayerNode)
@@ -78,7 +78,14 @@ class PlaySoundsViewController: UIViewController {
         audioPlayerNode.play()
     }
     
+    func resetAudioEngineAndPlayer() {
+        audioPlayer.stop()
+        audioEngine.stop()
+        audioEngine.reset()
+    }
+    
     @IBAction func stopButtonDidPress(sender: UIButton) {
-        self.audioPlayer.stop()
+        audioPlayer.stop()
+        audioEngine.stop()
     }
 }
