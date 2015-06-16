@@ -25,6 +25,9 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     }
     
     override func viewWillAppear(animated: Bool) {
+        
+        super.viewWillAppear(animated)
+        
         stopButton.hidden = true
         microphoneButton.enabled = true
         recordingInProgress.text = "Tap to Record"
@@ -79,6 +82,19 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
             
             self.performSegueWithIdentifier("stopRecording", sender: recordedAudio)
             
+        }
+        else {
+            let alertController = UIAlertController(title: "Audio could not be recorded", message: "Please try again", preferredStyle: .Alert)
+            
+            let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+            }
+            alertController.addAction(OKAction)
+            
+            self.presentViewController(alertController, animated: true) {
+            }
+            
+            recordingInProgress.text = "Tap to Record"
+            microphoneButton.enabled = true
         }
     }
     
